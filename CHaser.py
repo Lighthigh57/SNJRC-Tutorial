@@ -5,9 +5,10 @@ import sys
 
 class Client:
     def __init__(self):
-        self.port = input("ポート番号を入力してください → ")
-        self.name = input("ユーザー名を入力してください → ")[:15]
-        self.host = input("サーバーのIPアドレスを入力してください → ")
+        self.port = input("Connect port to : ")
+        self.name = "Light"
+        self.host = input("HostIP : ")
+        self.side = int(input("Cool = 0,Hot = 1 : "))
 
         if not self.__ip_judge(self.host):
             sys.exit(1)
@@ -34,7 +35,7 @@ class Client:
     def __str_send(self, send_str):
         try:
             self.client.sendall(send_str.encode("utf-8"))
-        except:
+        except socket.error:
             print("send error:{0}\0".format(send_str))
 
     def __order(self, order_str, gr_flag=False):
