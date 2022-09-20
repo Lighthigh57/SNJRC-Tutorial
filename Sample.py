@@ -15,7 +15,7 @@ def main():
 
         print(wall_max)
 
-        walked = 0
+        walked = -1
         while wall_max > walked:
             print(walked)
             value = runner.get_ready()
