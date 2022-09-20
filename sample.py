@@ -1,37 +1,41 @@
-import CHaser # 同じディレクトリに CHaser.py がある前提
+from Command import Command
 
-"""
-このファイルを直接実行したときに実行する関数．
-実行するまでの経緯はファイルの下部に記載．
-
-get_ready() → 行動関数 → get_ready() → ... の順で必ず処理を行う．
-行動関数は「内容_方向()」の命名規則に従って名付けられる．
-
-"""
 
 def main():
-    value = [] # フィールド情報を保存するリスト
-    client = CHaser.Client() # サーバーと通信するためのインスタンス
+    runner = Command()
+    side = runner.side
+    wall_max = 0
+    runner.get_ready()
+    if side == 0:
+        value = runner.move("search", 3)
 
-    while(True):
-        value = client.get_ready() # サーバーに行動準備が完了したと伝える
-        value = client.search_left() # サーバーに行動内容を伝える
+        for i, info in enumerate(value):
+            if info != 2:
+                wall_max = i
 
-        value = client.get_ready() # 行動する前には必ず get_ready() する
-        if value[7] != 2:
-            value = client.walk_down()
-        else:
-            value = client.put_up()
+        print(wall_max)
 
-        value = client.get_ready()
-        value = client.look_up()
+        walked = -1
+        while wall_max > walked:
+            print(walked)
+            value = runner.get_ready()
+            if value[3] != 2:
+                runner.move("walk", 3)
+                walked += 1
+            elif value[1] != 2:
+                runner.move("walk", 1)
+            elif value[7] != 2:
+                runner.move("walk", 7)
+            else:
+                runner.move("walk", 5)
 
-        value = client.get_ready()
-        value = client.put_right()
+    else:
+        value = runner.move("search", 5)
 
-"""
-python sample.py のようにこのファイルを直接実行すると，
-__name__ は "__main__" となる．これを利用して main() を実行する．
-"""
+        for i, info in enumerate(value):
+            if i != 2:
+                pass
+
+
 if __name__ == "__main__":
     main()
